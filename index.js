@@ -1,6 +1,5 @@
 const mineflayer = require('mineflayer')
 const cmd = require('mineflayer-cmd').plugin
-const { pathfinder, Movements, goals } = require('mineflayer-pathfinder')
 const GoalFollow = goals.GoalFollow
 const GoalBlock = goals.GoalBlock
 const fs = require('fs');
