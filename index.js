@@ -1,9 +1,9 @@
 const mineflayer = require('mineflayer')
 const cmd = require('mineflayer-cmd').plugin
-const fs = require('fs');
 const { pathfinder, Movements, goals } = require('mineflayer-pathfinder')
 const GoalFollow = goals.GoalFollow
 const GoalBlock = goals.GoalBlock
+const fs = require('fs');
 let rawdata = fs.readFileSync('config.json');
 let data = JSON.parse(rawdata);
 var lasttime = -1;
