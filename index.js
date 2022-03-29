@@ -1,5 +1,6 @@
 const mineflayer = require('mineflayer')
 const cmd = require('mineflayer-cmd').plugin
+const { pathfinder, Movements, goals: { GoalNear } } = require('mineflayer-pathfinder')
 const fs = require('fs');
 let rawdata = fs.readFileSync('config.json');
 let data = JSON.parse(rawdata);
@@ -22,6 +23,29 @@ function getRandomArbitrary(min, max) {
        return Math.random() * (max - min) + min;
 
 }
+
+const RANGE_GOAL = 1 // get within this radius of the player
+
+bot.loadPlugin(pathfinder)
+
+bot.once('spawn', () => {
+  const mcData = require('minecraft-data')(bot.version)
+  const defaultMove = new Movements(bot, mcData)
+
+  bot.on('chat', (username, message) => {
+    if (username === bot.username) return
+    if (message !== 'come') return
+    const target = bot.players[username]?.entity
+    if (!target) {
+      bot.chat("I don't see you !")
+      return
+    }
+    const { x: playerX, y: playerY, z: playerZ } = target.position
+
+    bot.pathfinder.setMovements(defaultMove)
+    bot.pathfinder.setGoal(new GoalNear(playerX, playerY, playerZ, RANGE_GOAL))
+  })
+})
 
 bot.loadPlugin(cmd)
 
@@ -71,3 +95,4 @@ bot.on('spawn',function() {
 bot.on('death',function() {
     bot.emit("respawn")
 });
+
